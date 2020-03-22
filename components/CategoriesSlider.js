@@ -1,49 +1,117 @@
 import React, { Component } from 'react'
-import {View,Text,StyleSheet,FlatList,TouchableOpacity, ScrollView, TouchableHighlight, TouchableHighlightComponent, TouchableNativeFeedbackBase} from "react-native"
+import {View,Text,StyleSheet,FlatList,TouchableOpacity, ScrollView,PanResponder, SafeAreaView} from "react-native"
 export default class CategoriesSlider extends Component {
+	constructor(){
+		super()
+		this.panResponder;
+		scroll= 0
+		this.count = 0
+		this.touched = false
+		this.clickedCategory = ""
+	}
 	state = {
+		locationX: 0, 
+      moveScroll : 0,
+		locationY: 0 ,
 		categoryToFilter : "",
-		data : [
-			"All Categories",
-			"Fast Food",
-			"Dairy Products",
-			"General Items",
-			"Hotel Food",
-			"Medicines"
+		data: [
+			{
+				id:"12",
+				title: "All Categories"
+			},
+			{
+				id:"123",
+				title: "Fast Food"
+			},
+			{
+				id:"222",
+				title: "Dairy Products"
+			},
+			{
+				id:"3232",
+				title: "General Items"
+			},
+			{
+				id:"28282",
+				title: "Hotel Food"
+			},			
+			{
+				id:"8484",
+				title: "Medicines"
+			}
 		]
 	}
-	categoryFilter(elem){
-		this.setState({categoryToFilter : elem})
+	componentWillMount() {
+		// console.warn(touched)
+		this._panResponder = PanResponder.create({
+
+			onStartShouldSetPanResponder:(evt, gestureState) => true,
+			
+			onMoveShouldSetPanResponder: (evt, gestureState) => true,
+
+			onPanResponderRelease:(evt,gestureState)=>{
+				// console.warn(gestureState.dx)
+			},
+			onPanResponderEnd: (evt,gestureState) => {
+				// this.
+				console.warn("touched",this.touched,"move",gestureState.dx)
+				if (this.touched && gestureState.dx == 0){
+					this.setState({categoryToFilter : this.clickedCategory})
+					// this.scroll.scrollToIndex({viewPosition:0.5, index: index});
+				}
+				// console.warn("end",)
+				this.touched = false
+			},
+			onPanResponderMove : ()=>{
+
+			}
+		 });
+	 }
+	categoryFilter(elem,index){
+		console.warn(elem,index)
+		this.touched = true
+		this.clickedCategory = elem
+		// this.setState({categoryToFilter : elem})
+		// this.componentWillMount(true)
+		// setTimeout(()=>{
+		// 	this.scroll.scrollToIndex({viewPosition:0.5, index: index});
+		// },500)
 	}
 	render() {
+		console.warn("filter",this.state.categoryToFilter)
 		return (
-			<View style={styles.container}>
-				{/* <Text>f</Text> */}
-				<ScrollView
-					// scrollsToTop={true}
-					// onTouchEnd={(contentWidth,contentHeight)=>console.warn(contentWidth)}
-					// onMagicTap={()=>console.warn("magic")}
-					onScrollAnimationEnd={()=>console.warn(this)}
-					onContentSizeChange={
-						(contentWidth, contentHeight)=>{
-							// console.warn(contentWidth+"  "+contentHeight)
-							this.setState({})
-						}
-					}
-					horizontal={true}
-					showsHorizontalScrollIndicator={false}
-				>
-					{this.state.data.map(elem => {
-						return(
-							<TouchableOpacity onPress={()=>this.categoryFilter(elem)} style={[styles.items,this.state.categoryToFilter == elem ? styles.border:""]}>
-								<Text style={styles.itemsText}>{elem}</Text>
-							</TouchableOpacity>
-						)
-					})}
-				</ScrollView>
+			<View  style={styles.container}>
+
+				<SafeAreaView style={styles.container}>
+					<FlatList
+						{...this._panResponder.panHandlers}
+						horizontal
+						ref={(ref) => this.scroll = ref}
+						showsHorizontalScrollIndicator={false}
+						data={this.state.data}
+						renderItem={({item})=>{
+							this.count += 1
+							if(this.count > this.state.data.length){
+								this.count = 1
+							}
+							let count = this.count
+
+							return(
+								<TouchableOpacity  onPressOut={()=>this.categoryFilter(item.title,count-1)} style={[styles.items,this.state.categoryToFilter == item.title ? styles.border:""]} >
+									<Text   style={styles.itemsText} >{item.title}</Text>
+								</TouchableOpacity>
+							)
+
+						}}
+						keyExtractor={item => item.id}
+					/>
+
+				</SafeAreaView>
+	
 			</View>
 		)
 	}
+
 }
 
 const styles = StyleSheet.create({
