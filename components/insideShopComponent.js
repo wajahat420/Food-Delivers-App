@@ -4,12 +4,21 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 
 export default function insideShopComponent(props) {
 	return (
-		<TouchableOpacity activeOpacity={0.9} onPress={props.onPress}>
+		<TouchableOpacity activeOpacity={0.9}>
 			
 			<View style={styles.container}>
 				<Text style={styles.item}>{props.item}</Text>
-				<Text style={styles.price}>Rs. {props.price}</Text>
-				<Text style={styles.price} >Packet = Rs. 200</Text>
+				<View style={{textAlign : "right",display:"flex"}}>
+
+					<TouchableOpacity activeOpacity={0.7} onPress={props.perPiecePress}>
+						<Text style={[styles.price,styles.piece]}>{props.piece[0]} = Rs. {props.piece[1]}</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity activeOpacity={0.7} onPress={props.packetPress}>
+						<Text style={[styles.price,styles.packet,props.packet[0] == undefined && {display : "none"} ]} >{props.packet[0]} = Rs {props.packet[1]}</Text>
+					</TouchableOpacity>
+
+				</View>
 			</View>
 
 		</TouchableOpacity>
@@ -19,23 +28,26 @@ export default function insideShopComponent(props) {
 const styles = StyleSheet.create({
 	container : {
 		display : "flex",
-		flexDirection :"column",
 		borderColor :  "rgba(172, 172, 172, 0.253)",
 		borderBottomWidth : 2,
-		padding : 4,
-
-
 	},
 	item : {
 		fontSize : 17,
 		letterSpacing : 0.25,
-		
 		fontWeight : "700"
 	},
 	price:{
-		fontSize : 17,
-		textAlign : "right",
-		justifyContent : "flex-end",
-		// flex : 1
+		width : 120,
+		padding:4,
+		fontSize : 15,
+		textAlign : "center",
+		alignSelf : "flex-end",
+		backgroundColor : "rgba(172, 172, 172, 0.253)",
+	},
+	piece:{
+		marginBottom : 5,
+	},
+	packet: {
+		// marginTop: 5
 	}
 })
