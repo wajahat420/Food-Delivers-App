@@ -1,108 +1,93 @@
 import React, { Component } from 'react'
-import {Text,Button,View, StyleSheet} from "react-native"
+import {Text,Button,View, StyleSheet,FlatList} from "react-native"
 import InsideShopDetailComponent from "../components/insideShopComponent"
-import InsideSHopHeader from "../components/insideShopHeader"
-import { ScrollView } from 'react-native-gesture-handler'
-export default class InsideShopDetail extends Component {
-	state = {
-		shopItems : 
-			[
-				{
-					name : "Anti",
-					items : 
-						{
-							"Chips" : [
-								{"name":"French Cheese Lays","piece":30},
-								{"name":"Masala Lays","piece":30},
-								{"name":"French Cheese Lays","piece":50},
-								{"name":"Masala Lays","piece":50}
-							],
-							"Shaving Erasers" : [
-								{"name":"Gillete","piece":30,"packet":180},
-								{"name":"Gillete","piece":60,"packet":350},
-								{"name":"Mach 3","piece":50,"packet":300}
-							],
-							"Juices and Cold drinks" : [
-								{"name":"slice","piece":20,"packet":300},
-								{"name":"pakola","piece":35,"packet":350}
-							]
-						}	
-				},
-				{
-					name : "SSAZZ",
-					items : 
-						{
-							"Chips" : [
-								{name:"French Cheese Lays",piece:30},
-								{name:"Masala Lays",piece:30},
-								{name:"French Cheese Lays",piece:50},
-								{name:"Masala Lays",piece:50}
-							],
-							"Shaving Erasers" : [
-								{name:"Gillete",piece:30,packet:180},
-								{name:"Gillete",piece:60,packet:350},
-								{name:"Mach 3",piece:50,packet:300}
-							],
-							"Juices and Cold drinks" : [
-								{name:"slice",piece:20,packet:300},
-								{name:"pakola",piece:35,packet:350}
-							]
-						}
-				}
-			]
-		
-	}
+import InsideShopHeader from "../components/insideShopHeader"
+import CategorySlider from "../components/CategoriesSlider"
+import Input from "../components/insideShopInput"
 
-	filterShops(shop){
-		// console.warn("work",shop.name)
-		return shop.name ==  "SSAZZ"
+import {connect} from "react-redux";
+
+
+class InsideShopDetail extends Component {
+	constructor(){
+		super()
+		this.itemCategories = [],
+		this.data = [],
+		this.state = {
+			loading : false,
+			shopClicked :			
+			{
+				id: Math.ceil(Math.random() * Math.random() * 10000),
+				name : "SSAZZ",
+				items : 
+					{
+						"Chips" : [
+							{name:"French Cheese Lays",piece:30},
+							{name:"Masala Lays",piece:30},
+							{name:"French Cheese Lays",piece:50},
+							{name:"Masala Lays",piece:50}
+						],
+						"Shaving Erasers" : [
+							{name:"Gillete",piece:30,packet:180},
+							{name:"Gillete",piece:60,packet:350},
+							{name:"Mach 3",piece:50,packet:300}
+						],
+						"Juices and Cold drinks" : [
+							{name:"slice",piece:20,packet:300},
+							{name:"pakola",piece:35,packet:350}
+						],
+						"Grocery" : [
+							{name: "sugar","1 kg":"80"},
+							{name:"aata","1kg":"60"}
+						]
+					}
+			},
+
+			
+		}
+		this.categories = Object.getOwnPropertyNames(this.state.shopClicked.items)
 	}
 	sendToCart(shopName,item,pressed) {
 		console.warn(shopName,item,pressed)
 	}
-	render() {
+	componentWillMount(){
+		console.warn("signin",this.props.signin)
+		this.categories.map((elem,index)=>{
+			this.data.push({id:index,title:elem}) 
+		})
+	}
+	render() { 
+		// console.warn("data",this.data.length,this.data)
+		// console.warn(",,,",this.categories)
 		return (
 			<View>
-				<InsideSHopHeader/>
-				<ScrollView style={styles.ItemsStyling}>
-
-					{this.state.shopItems.filter((shop)=>this.filterShops(shop)).map( shop => {
-						// console.warn("ite",shop)
-						let itemCategories = Object.getOwnPropertyNames(shop.items)
-						// console.warn("categories",itemCategories)
+				<InsideShopHeader shopName={this.state.shopClicked.name}/>
+				<CategorySlider data={this.data}/>
+				<Input/>
+				<FlatList style={styles.ItemsStyling}
+					data={this.data}
+					keyExtractor={item => item.key}
+					renderItem = {elem=>{
+						const categoryItems = this.state.shopClicked.items[elem.item.title]
+						
 						return(
-							itemCategories.map(category => {
+							categoryItems.map((item)=>{
+								let pieceORDesc = Object.getOwnPropertyNames(item)[1]
+								let packetORDesc = Object.getOwnPropertyNames(item)[2]
 								return(
-									shop.items[category].map(item=>{
-										let pieceORDesc = Object.getOwnPropertyNames(item)[1]
-										let packetORDesc = Object.getOwnPropertyNames(item)[2]
-										console.warn("piece packet",item[pieceORDesc])
-										return (
-											<InsideShopDetailComponent 
-												perPiecePress={()=>this.sendToCart(shop.name,item,"piece")}
-												packetPress = {()=> this.sendToCart(shop.name,item,"packet")}
-												item={item.name}
-												piece={[pieceORDesc,item[pieceORDesc]]}
-												packet={[packetORDesc,item[packetORDesc]]}
-											/>
-										)
-									})
+									<InsideShopDetailComponent 
+										perPiecePress={()=>this.sendToCart(this.state.shopClicked.name,item,"piece")}
+										packetPress = {()=> this.sendToCart(this.state.shopClicked.name,item,"packet")}
+										item={item.name}
+										piece={[pieceORDesc,item[pieceORDesc]]}
+										packet={[packetORDesc,item[packetORDesc]]}
+									/>
 								)
-								// let name =  Object.getOwnPropertyNames(item)[0]
-								// let price = item[name]
-								// // console.warn("elemmm",name,price)
-								// return (
-								// 	<InsideShopDetailComponent
-								// 		perPiecePress={()=>this.sendToCart(shop.name,name,price)}
-								// 		packetPress = {()=> this.sendToCart(shop.name,name,price)}
-								// 		item={name}
-								// 		price={price}
-								// 	/>
-								// )
-							})
+							})					
 						)
-					})}
-				</ScrollView>
+					}}
+				>
+				</FlatList>
 
 			</View>
 		)
@@ -112,8 +97,26 @@ export default class InsideShopDetail extends Component {
 const styles = StyleSheet.create({
 	ItemsStyling : {
 		paddingHorizontal : 8,
+		marginBottom: 90
 		// marginBottom : 20
 		// marginVertical : 9
 		// marginHorizontal : 8
 	}
 })
+
+
+const mapStateTOProps = (state) =>{
+	return{
+		signin : state.signin
+	}
+}
+
+const mapDispatchTOProps = (dispatch) =>{
+	return{
+
+	}
+}
+
+export default connect(mapStateTOProps,mapDispatchTOProps)(InsideShopDetail);
+
+

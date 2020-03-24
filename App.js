@@ -10,6 +10,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Button} from "react-native"
 const Stack = createStackNavigator();
 
+import {Provider} from "react-redux"
+import reducer from "./store/store"
+import { createStore } from 'redux';
+const store = createStore(reducer)
+
+
 function DetailsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -24,7 +30,6 @@ function DetailsScreen({ navigation }) {
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {/* <Text>Home Screen</Text> */}
       <Button
         title="Go to Details"
         onPress={() => navigation.navigate('Details')}
@@ -37,12 +42,16 @@ import { StyleSheet, Text, View,TextInput ,TouchableHighlight} from 'react-nativ
 
 export default function App() {
   return (
-    <NavigationContainer>
-    <Stack.Navigator headerMode="none">
-      <Stack.Screen  name="Home" component={InsideShopDetails} />
-      <Stack.Screen name="Details" component={Home} />
-    </Stack.Navigator>
-  </NavigationContainer>
+    
+    <Provider store={store}> 
+      <NavigationContainer>
+        <Stack.Navigator headerMode="none">
+          <Stack.Screen  name="Home" component={InsideShopDetails} />
+          <Stack.Screen name="Details" component={Home} />
+        </Stack.Navigator>
+      </NavigationContainer>
+     </Provider> 
+
   );
 }
 

@@ -7,42 +7,16 @@ export default class CategoriesSlider extends Component {
 		scroll= 0
 		this.count = 0
 		this.touched = false
-		this.clickedCategory = ""
+		this.tempClicked = ""
+		this.clickedCategoryIndex = 0
 	}
 	state = {
 		locationX: 0, 
       moveScroll : 0,
 		locationY: 0 ,
-		categoryToFilter : "",
-		data: [
-			{
-				id:"12",
-				title: "All Categories"
-			},
-			{
-				id:"123",
-				title: "Fast Food"
-			},
-			{
-				id:"222",
-				title: "Dairy Products"
-			},
-			{
-				id:"3232",
-				title: "General Items"
-			},
-			{
-				id:"28282",
-				title: "Hotel Food"
-			},			
-			{
-				id:"8484",
-				title: "Medicines"
-			}
-		]
+		categoryToFilter : ""
 	}
 	componentWillMount() {
-		// console.warn(touched)
 		this._panResponder = PanResponder.create({
 
 			onStartShouldSetPanResponder:(evt, gestureState) => true,
@@ -53,13 +27,11 @@ export default class CategoriesSlider extends Component {
 				// console.warn(gestureState.dx)
 			},
 			onPanResponderEnd: (evt,gestureState) => {
-				// this.
-				console.warn("touched",this.touched,"move",gestureState.dx)
-				if (this.touched && gestureState.dx == 0){
-					this.setState({categoryToFilter : this.clickedCategory})
-					// this.scroll.scrollToIndex({viewPosition:0.5, index: index});
+				// console.warn("touched",this.touched,"move",gestureState.dx)
+				if (this.touched && gestureState.dx <= 4){
+					this.setState({categoryToFilter : this.tempClicked})
+					this.scroll.scrollToIndex({viewPosition:0.5, index: this.clickedCategoryIndex});
 				}
-				// console.warn("end",)
 				this.touched = false
 			},
 			onPanResponderMove : ()=>{
@@ -68,17 +40,11 @@ export default class CategoriesSlider extends Component {
 		 });
 	 }
 	categoryFilter(elem,index){
-		console.warn(elem,index)
 		this.touched = true
-		this.clickedCategory = elem
-		// this.setState({categoryToFilter : elem})
-		// this.componentWillMount(true)
-		// setTimeout(()=>{
-		// 	this.scroll.scrollToIndex({viewPosition:0.5, index: index});
-		// },500)
+		this.clickedCategoryIndex = index
+		this.tempClicked = elem
 	}
 	render() {
-		console.warn("filter",this.state.categoryToFilter)
 		return (
 			<View  style={styles.container}>
 
@@ -88,10 +54,10 @@ export default class CategoriesSlider extends Component {
 						horizontal
 						ref={(ref) => this.scroll = ref}
 						showsHorizontalScrollIndicator={false}
-						data={this.state.data}
+						data={this.props.data}
 						renderItem={({item})=>{
 							this.count += 1
-							if(this.count > this.state.data.length){
+							if(this.count > this.props.data.length){
 								this.count = 1
 							}
 							let count = this.count
@@ -120,9 +86,9 @@ const styles = StyleSheet.create({
 	},
 	items:{
 		backgroundColor:"white",
-		borderRadius : 25,
-		margin: 9,
-		padding: 3,
+		// borderRadius : 25,
+		// margin: 9,
+		padding: 13,
 		paddingHorizontal: 11,
 	},
 	itemsText:{
@@ -130,7 +96,7 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 	},
 	border: {
-		borderWidth:1.6,
+		borderBottomWidth:2,
 		borderColor: "red",
 	},
 	notChange:{

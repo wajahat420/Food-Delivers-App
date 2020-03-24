@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   heading : {
 	  padding : 6,
-	  marginTop: 25,
+	  marginTop: 32,
 	  fontSize: 30,
 	  textAlign: "center",
 	  color: "white"
