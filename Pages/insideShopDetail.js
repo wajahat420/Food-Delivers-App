@@ -3,17 +3,19 @@ import {Text,Button,View, StyleSheet,FlatList} from "react-native"
 import InsideShopDetailComponent from "../components/insideShopComponent"
 import InsideShopHeader from "../components/insideShopHeader"
 import CategorySlider from "../components/CategoriesSlider"
-import Input from "../components/insideShopInput"
+import Input from "../components/textInput"
 
 import {connect} from "react-redux";
 
 
 class InsideShopDetail extends Component {
-	constructor(){
+	constructor({navigation}){
 		super()
-		this.itemCategories = [],
-		this.data = [],
+		this.navigation = navigation
+		this.itemCategories = []
+		this.data = []
 		this.state = {
+			display : false,
 			loading : false,
 			shopClicked :			
 			{
@@ -42,8 +44,61 @@ class InsideShopDetail extends Component {
 						]
 					}
 			},
-
-			
+			shopsItems :	
+			[
+			{
+				id: Math.ceil(Math.random() * Math.random() * 10000),
+				name : "SSAZZ",
+				items : 
+					{
+						"Chips" : [
+							{name:"French Cheese Lays",piece:30},
+							{name:"Masala Lays",piece:30},
+							{name:"French Cheese Lays",piece:50},
+							{name:"Masala Lays",piece:50}
+						],
+						"Shaving Erasers" : [
+							{name:"Gillete",piece:30,packet:180},
+							{name:"Gillete",piece:60,packet:350},
+							{name:"Mach 3",piece:50,packet:300}
+						],
+						"Juices and Cold drinks" : [
+							{name:"slice",piece:20,packet:300},
+							{name:"pakola",piece:35,packet:350}
+						],
+						"Grocery" : [
+							{name: "sugar","1 kg":"80"},
+							{name:"aata","1kg":"60"}
+						]
+					}
+			},
+			{
+				id: Math.ceil(Math.random() * Math.random() * 10000),
+				name : "SSAZZ",
+				items : 
+					{
+						"Chips" : [
+							{name:"French Cheese Lays",piece:30},
+							{name:"Masala Lays",piece:30},
+							{name:"French Cheese Lays",piece:50},
+							{name:"Masala Lays",piece:50}
+						],
+						"Shaving Erasers" : [
+							{name:"Gillete",piece:30,packet:180},
+							{name:"Gillete",piece:60,packet:350},
+							{name:"Mach 3",piece:50,packet:300}
+						],
+						"Juices and Cold drinks" : [
+							{name:"slice",piece:20,packet:300},
+							{name:"pakola",piece:35,packet:350}
+						],
+						"Grocery" : [
+							{name: "sugar","1 kg":"80"},
+							{name:"aata","1kg":"60"}
+						]
+					}
+			}
+			]		
 		}
 		this.categories = Object.getOwnPropertyNames(this.state.shopClicked.items)
 	}
@@ -61,9 +116,12 @@ class InsideShopDetail extends Component {
 		// console.warn(",,,",this.categories)
 		return (
 			<View>
-				<InsideShopHeader shopName={this.state.shopClicked.name}/>
+				<InsideShopHeader 
+					searchPress={()=>this.setState({display : !this.state.display})} 
+					backPress={()=>	this.navigation.navigate('home')} 
+					shopName={this.state.shopClicked.name}/>
 				<CategorySlider data={this.data}/>
-				<Input/>
+				<Input display={this.state.display ? "input":"display"} placeholder="Search items in this shop"/>
 				<FlatList style={styles.ItemsStyling}
 					data={this.data}
 					keyExtractor={item => item.key}
@@ -97,7 +155,7 @@ class InsideShopDetail extends Component {
 const styles = StyleSheet.create({
 	ItemsStyling : {
 		paddingHorizontal : 8,
-		marginBottom: 90
+		marginBottom: 140
 		// marginBottom : 20
 		// marginVertical : 9
 		// marginHorizontal : 8

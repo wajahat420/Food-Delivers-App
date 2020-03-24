@@ -8,13 +8,13 @@ return (
 			<View style={styles.headingBG}>
 				<Text style={styles.heading}>Food Delivers</Text>
 			</View>
-			<TextInput style = {styles.input}
+			{/* <TextInput style = {styles.input}
 			underlineColorAndroid = "transparent"
 			placeholder = "Search Food,General Items, Dairy Products etc..."
 			placeholderTextColor = "gray"
 			autoCapitalize = "none"
 			// onChangeText = {this.handleEmail}
-			/>
+			/> */}
 		</View>
 );
 }

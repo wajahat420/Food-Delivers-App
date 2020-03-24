@@ -35,10 +35,7 @@ export default class Shops extends Component {
 			}
 		]
 	}
-	openShopDetails(item){
-		console.warn("item",item)
 
-	}
 	render() {
 		return (
 			<View style={styles.container}>
@@ -51,7 +48,7 @@ export default class Shops extends Component {
 						renderItem={({item})=>{
 
 							return(
-								<TouchableOpacity activeOpacity={0.8} onPress={()=>this.openShopDetails(item)}>
+								<TouchableOpacity activeOpacity={0.8} onPress={()=>this.props.openShopDetails(item)}>
 									<ShopFront
 										imgURL={item.img}
 										name={item.name}

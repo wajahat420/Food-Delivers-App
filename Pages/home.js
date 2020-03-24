@@ -3,9 +3,14 @@ import Header from "../components/header"
 import Footer from "../components/footer"
 import Caterories from "../components/CategoriesSlider"
 import Shops from "../components/shops"
+import Input from "../components/textInput"
 import {View,StyleSheet} from "react-native"
 
 export default class Home extends Component {
+	constructor({navigation}){
+		super()
+		this.navigation = navigation
+	}
 	state = {
 		data: [
 			{
@@ -34,12 +39,18 @@ export default class Home extends Component {
 			}
 		]
 	}
+
+	openShopDetails(item){
+		this.navigation.navigate("insideShopDetails")
+		console.warn("item",item)
+	}
 	render() {
 		return (
 		<View style={styles.container}>
 			<Header/>
 			<Caterories data = {this.state.data}/>
-			<Shops/>
+			<Input placeholder="Search Food, General Items etc.."/>
+			<Shops openShopDetails={(item)=>this.openShopDetails(item)}/>
 			<Footer/>
 		</View>
 		)

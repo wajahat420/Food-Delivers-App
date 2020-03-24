@@ -37,17 +37,18 @@ const styles = StyleSheet.create({
 		fontWeight : "700"
 	},
 	price:{
-		width : 120,
-		padding:4,
+		paddingHorizontal:7,
+		paddingTop:2,
+		paddingBottom : 4,
 		fontSize : 15,
 		textAlign : "center",
 		alignSelf : "flex-end",
+		borderRadius : 3,
 		backgroundColor : "rgba(172, 172, 172, 0.253)",
 	},
 	piece:{
 		marginBottom : 5,
 	},
 	packet: {
-		// marginTop: 5
 	}
 })

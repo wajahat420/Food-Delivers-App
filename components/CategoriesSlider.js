@@ -28,7 +28,7 @@ export default class CategoriesSlider extends Component {
 			},
 			onPanResponderEnd: (evt,gestureState) => {
 				// console.warn("touched",this.touched,"move",gestureState.dx)
-				if (this.touched && gestureState.dx <= 4){
+				if (this.touched && gestureState.dx <= 4 && gestureState.dx >= -4){
 					this.setState({categoryToFilter : this.tempClicked})
 					this.scroll.scrollToIndex({viewPosition:0.5, index: this.clickedCategoryIndex});
 				}

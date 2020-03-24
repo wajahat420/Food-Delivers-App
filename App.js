@@ -46,8 +46,8 @@ export default function App() {
     <Provider store={store}> 
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
-          <Stack.Screen  name="Home" component={InsideShopDetails} />
-          <Stack.Screen name="Details" component={Home} />
+          <Stack.Screen  name="insideShopDetails" component={InsideShopDetails} />
+          <Stack.Screen name="home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
      </Provider> 
