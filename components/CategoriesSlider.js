@@ -3,12 +3,12 @@ import {View,Text,StyleSheet,FlatList,TouchableOpacity, ScrollView,PanResponder,
 export default class CategoriesSlider extends Component {
 	constructor(){
 		super()
-		this.panResponder;
-		scroll= 0
-		this.count = 0
-		this.touched = false
-		this.tempClicked = ""
-		this.clickedCategoryIndex = 0
+			this.panResponder;
+			this.scroll= 0
+			this.count = 0
+			this.touched = false
+			this.tempClicked = ""
+			this.clickedCategoryIndex = 0
 	}
 	state = {
 		locationX: 0, 
@@ -16,7 +16,10 @@ export default class CategoriesSlider extends Component {
 		locationY: 0 ,
 		categoryToFilter : ""
 	}
+
 	componentWillMount() {
+		// console.warn("n",this.props.data[0].title)
+		this.setState({categoryToFilter : this.props.data[0].title}) 
 		this._panResponder = PanResponder.create({
 
 			onStartShouldSetPanResponder:(evt, gestureState) => true,
@@ -24,11 +27,11 @@ export default class CategoriesSlider extends Component {
 			onMoveShouldSetPanResponder: (evt, gestureState) => true,
 
 			onPanResponderRelease:(evt,gestureState)=>{
-				// console.warn(gestureState.dx)
 			},
 			onPanResponderEnd: (evt,gestureState) => {
 				// console.warn("touched",this.touched,"move",gestureState.dx)
 				if (this.touched && gestureState.dx <= 4 && gestureState.dx >= -4){
+					this.props.moveToIndex(this.clickedCategoryIndex)
 					this.setState({categoryToFilter : this.tempClicked})
 					this.scroll.scrollToIndex({viewPosition:0.5, index: this.clickedCategoryIndex});
 				}

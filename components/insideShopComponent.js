@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 	item : {
 		fontSize : 17,
 		letterSpacing : 0.25,
-		fontWeight : "700"
+		fontWeight : "500"
 	},
 	price:{
 		paddingHorizontal:7,

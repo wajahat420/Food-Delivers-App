@@ -1,25 +1,18 @@
 const reducer = (state = {
-	receiver : "",
-	signin : "abc",
-	imageURL : "",
-	students : [],
-	messages : [],
-	AllPosts : [],
-	msgBoxTitles : [],
-	openMsgWindow : "",
-	searchText : "",
-	sortBy : "name",
+	shopClicked : {},
+
 
 }, action) => {
 	switch (action.type) {
-		 case "LIKE":
-			  let tempArr = [...state.AllPosts]
-			  let likeValue = tempArr[action.index].like
-			  tempArr[action.index].like = !likeValue
+		 case "shopClicked":
+			//   let tempArr = [...state.AllPosts]
+			//   let likeValue = tempArr[action.index].like
+			//   tempArr[action.index].like = !likeValue
 			  state ={
 					...state,
-					AllPosts : tempArr
+					shopClicked : action.shopClicked
 			  }
+			//   console.warn("click",action.shopClicked)
 		 break
 		 default :
 				  return state 

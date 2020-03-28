@@ -7,11 +7,13 @@ export default class Shops extends Component {
 		shopDeatils :
 		[
 			{
+				id : "123",
 				img: "../general_store.jpeg",
 				name: "Anti",
 				location :"Ahsanabad Shops"
 			},
 			{
+				id: "234",
 				img: "../boat.jpg",
 				name: "SSAZZ",
 				location :"Ahsanabad Shops"

@@ -6,7 +6,9 @@ import Shops from "../components/shops"
 import Input from "../components/textInput"
 import {View,StyleSheet} from "react-native"
 
-export default class Home extends Component {
+import {connect} from "react-redux"
+
+class Home extends Component {
 	constructor({navigation}){
 		super()
 		this.navigation = navigation
@@ -42,7 +44,7 @@ export default class Home extends Component {
 
 	openShopDetails(item){
 		this.navigation.navigate("insideShopDetails")
-		console.warn("item",item)
+		this.props.setShopClicked(item)
 	}
 	render() {
 		return (
@@ -67,3 +69,22 @@ const styles = StyleSheet.create({
 	  // justifyContent: 'center',
 	},
  });
+
+ const mapStateTOProps = (state) =>{
+	return{
+		signin : state.signin
+	}
+}
+
+const mapDispatchTOProps = (dispatch) =>{
+	return{
+		setShopClicked :(shopClicked) => {
+			dispatch({
+				type : "shopClicked",
+				shopClicked
+			})
+		}
+	}
+}
+
+export default connect(mapStateTOProps,mapDispatchTOProps)(Home)
