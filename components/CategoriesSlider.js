@@ -9,17 +9,19 @@ export default class CategoriesSlider extends Component {
 			this.touched = false
 			this.tempClicked = ""
 			this.clickedCategoryIndex = 0
-	}
-	state = {
-		locationX: 0, 
-      moveScroll : 0,
-		locationY: 0 ,
-		categoryToFilter : ""
+
+			this.state = {
+				categoryToFilter : ""
+			}
 	}
 
 	componentWillMount() {
-		// console.warn("n",this.props.data[0].title)
-		this.setState({categoryToFilter : this.props.data[0].title}) 
+		// console.warn("n",this.props.data)
+		if (this.props.data.length != 0){
+			console.warn("workkkk")
+			this.setState({categoryToFilter : this.props.data[0].title}) 
+		}
+
 		this._panResponder = PanResponder.create({
 
 			onStartShouldSetPanResponder:(evt, gestureState) => true,
@@ -85,12 +87,9 @@ export default class CategoriesSlider extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor:"rgba(104, 102, 102, 0.253)",
+		backgroundColor:"white",
 	},
 	items:{
-		backgroundColor:"white",
-		// borderRadius : 25,
-		// margin: 9,
 		padding: 13,
 		paddingHorizontal: 11,
 	},
@@ -101,12 +100,6 @@ const styles = StyleSheet.create({
 	border: {
 		borderBottomWidth:2,
 		borderColor: "red",
-	},
-	notChange:{
-		backgroundColor : "white"
-	},
-	change:{
-		backgroundColor : "red"
 	}
 
  });

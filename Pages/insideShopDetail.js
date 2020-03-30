@@ -60,17 +60,6 @@ class InsideShopDetail extends Component {
 					id: "234",
 					items : 
 						{
-							"Chips" : [
-								{name:"French Cheese Lays",piece:30},
-								{name:"Masala Lays",piece:30},
-								{name:"French Cheese Lays",piece:50},
-								{name:"Masala Lays",piece:50}
-							],
-							"Shaving Erasers" : [
-								{name:"Gillete",piece:30,packet:180},
-								{name:"Gillete",piece:60,packet:350},
-								{name:"Mach 3",piece:50,packet:300}
-							],
 							"Juices and Cold drinks" : [
 								{name:"slice",piece:20,packet:300},
 								{name:"pakola",piece:35,packet:350}
@@ -78,15 +67,55 @@ class InsideShopDetail extends Component {
 							"Grocery" : [
 								{name: "sugar","1 kg":"80"},
 								{name:"aata","1kg":"60"}
-							],
-							"Tofee" : [
-								{name:"Ding Dong",piece:2},
-								{name:"Fresh up",piece:2},
-								{name:"Fanta",piece:1},
-								{name:"Eclairs",piece:2}
-							],
+							]
 						}
 				},
+				{
+					id:"789",
+					items : 
+						{
+							"Milk and Yougart" : [
+								{name:"milk","1 kg" : 105},
+								{name:"yougart","1kg":90}
+							],
+							"Others" : [
+								{name:"small papay","1 kg":60},
+								{name:"big papay","1 kg":80},
+								{name:"baqar khani",packet:50},
+								{name:"egg",piece:10,dozen:110}
+							]
+						},
+					
+				},
+				{
+					id : "198",
+					items: 
+						{
+							"Biryani and Pulao" : [
+								{name:"Chicken Biryani",plate:70},
+								{name:"Chicken Pulao",plate:70},
+								{name:"Beef Biryani",plate:70},
+								{name:"Beef Pulao",plate:70},
+								{name:"Saadi Biryani",plate:50},
+								{name:"Saadi Pulao",plate:50}
+
+							],
+							"Daal and Salan": [
+								{name:"Daal Maash",plate:80},
+								{name:"Daal Maash Fry",plate:100},
+								{name:"Daal Chana",plate:80},
+								{name:"Daal Chana Fry",plate:100},
+								{name:"Chicken Qorma",plate:120}
+							],
+							"Roti and others" : [
+								{name:"Naan",piece: 10},
+								{name:"Chapati",piece:9},
+								{name:"Shermaal",piece:30},
+								{name:"Taftan",piece:30}
+							]
+						}
+					
+				}
 			]	
 		}
 		this.categories = []
@@ -94,10 +123,7 @@ class InsideShopDetail extends Component {
 	sendToCart(shopName,item,pressed) {
 		console.warn(shopName,item,pressed)
 	}
-	componentWillMount(){
-		// console.warn("willMount")
 
-	}
 	renderShopData(item){
 				
 			this.shopClicked = item
@@ -108,7 +134,7 @@ class InsideShopDetail extends Component {
 			this.categories.map((elem,index)=>{
 				this.data.push({id:index,title:elem}) 
 			})
-			// console.warn("shopCLicked", this.categories)
+			// console.warn("shopCLicked", item)
 	
 			for(i=0;i<this.data.length;i++){
 				this.dataAndCategories.push(this.data[i])
@@ -145,10 +171,7 @@ class InsideShopDetail extends Component {
 		this.state.shopsItems.forEach(item=>{
 			if(item.id === this.props.shopClicked.id && item.id !== this.shopClicked.id){
 				this.renderShopData(item)
-				// console.warn("inside...")
-				// console.warn("id",this.shopClicked.id,item.id)
 			}
-			// console.warn("id",item.id,this.props.shopClicked.id)
 
 		})
 
@@ -169,6 +192,7 @@ class InsideShopDetail extends Component {
 					ref={(ref) => this.scroll = ref}
 
 					renderItem = {elem=>{
+						// console.warn("clicked",this.shopClicked.items[elem.item.title])
 						const categoryItems = this.shopClicked.items[elem.item.title]
 						let counter1 = 0
 						let counter2 = 0
@@ -181,11 +205,9 @@ class InsideShopDetail extends Component {
 						}
 						return(
 							categoryItems.map((item)=>{
-								// console.warn("itemmmmm",item.packet)
 								let pieceORDesc = Object.getOwnPropertyNames(item)[1]
 								let packetORDesc = Object.getOwnPropertyNames(item)[2]
 
-								// console.warn("checking",item,item[packetORDesc],counter1 += 1)
 								if(item[packetORDesc] !== undefined){
 									// counter1 += 1
 									this.dataAndCategories[elem.index]["pieceAndPacket"] = counter1 += 1
