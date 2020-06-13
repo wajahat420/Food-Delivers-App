@@ -6,11 +6,16 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Material from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default class Footer extends Component {
+
 	state = {
-		currentClick : ""
+		currentClick : "home"
 	}
 	clicked(directTO){
+		// console.warn("navigate",this.props.navigation)
 		this.setState({currentClick : directTO})
+		if(directTO == "cart"){
+			this.props.navigation.navigate("cart")
+		}
 	}
 	render(){
 		// console.warn(this.state.currentClick)

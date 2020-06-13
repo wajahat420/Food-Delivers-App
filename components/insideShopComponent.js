@@ -1,6 +1,7 @@
 import React from 'react'
 import {Text, View,StyleSheet} from "react-native"
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import Quantity from "../components/quantity"
 
 export default function insideShopComponent(props) {
 	return (
@@ -10,13 +11,19 @@ export default function insideShopComponent(props) {
 				<Text style={styles.item}>{props.item}</Text>
 				<View style={{textAlign : "right",display:"flex"}}>
 
-					<TouchableOpacity activeOpacity={0.7} onPress={props.perPiecePress}>
-						<Text style={[styles.price,styles.piece]}>{props.piece[0]} = Rs. {props.piece[1]}</Text>
-					</TouchableOpacity>
+						<View style={styles.quantityAndPrice}>
+							<Quantity quantity={props.pieceQty} display={props.pieceQty}/>
+							<TouchableOpacity activeOpacity={0.7} onPress={props.perPiecePress}>
+								<Text style={[styles.price,styles.piece]}>{props.piece[0]} = Rs. {props.piece[1]}</Text>
+							</TouchableOpacity>
+						</View>
 
-					<TouchableOpacity activeOpacity={0.7} onPress={props.packetPress}>
-						<Text style={[styles.price,styles.packet,props.packet[0] == undefined && {display : "none"} ]} >{props.packet[0]} = Rs {props.packet[1]}</Text>
-					</TouchableOpacity>
+						<View style={styles.quantityAndPrice}>
+							<Quantity  quantity={props.packetQty} display={props.packetQty}/>
+							<TouchableOpacity activeOpacity={0.7} onPress={props.packetPress}>
+								<Text style={[styles.price,props.packet[0] == undefined && {display : "none"} ]} >{props.packet[0]} = Rs {props.packet[1]}</Text>
+							</TouchableOpacity>
+						</View>
 
 				</View>
 			</View>
@@ -27,7 +34,7 @@ export default function insideShopComponent(props) {
 
 const styles = StyleSheet.create({
 	container : {
-		display : "flex",
+		// display : "flex",
 		borderColor :  "rgba(172, 172, 172, 0.253)",
 		borderBottomWidth : 2,
 	},
@@ -49,6 +56,10 @@ const styles = StyleSheet.create({
 	piece:{
 		marginBottom : 5,
 	},
-	packet: {
-	}
+	quantityAndPrice : {
+		alignSelf : "flex-end",
+		display : "flex",
+		flexDirection : "row"
+	},
+
 })
