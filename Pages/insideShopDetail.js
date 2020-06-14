@@ -33,8 +33,6 @@ class InsideShopDetail extends Component {
 		this.categories = []
 	}
 	componentDidMount(){
-		console.warn("Did Mount",this.props.updateQty)
-		// this.state.updateQty = this.props.updateQty
 		this.setState({updateQty: this.props.updateQty, shopsItems : this.props.shopsItems})
 	}
 	sendToCart(shopName,item,pressed) {
@@ -44,6 +42,8 @@ class InsideShopDetail extends Component {
 		let updateQty = this.state.updateQty
 		let pieceQty;
 		let packetQty;
+		let piece = Object.getOwnPropertyNames(item)[2]
+		let packet = Object.getOwnPropertyNames(item)[3]
 
 		if (updateQty[item.id] == undefined){
 			if (pressed == "piece"){
@@ -72,11 +72,14 @@ class InsideShopDetail extends Component {
 		let BuyItem = {
 			shop : shopName,
 			item : item["name"],
-			piecePrice : item["piece"],
+			piecePrice : item[piece],
 			pieceQty,
-			packetPrice : item["packet"],
-			packetQty
+			pieceName:piece,
+			packetPrice : item[packet],
+			packetQty,
+			packetName : packet
 		}
+		console.warn("packet",BuyItem)
 		let cart = {...this.props.getCart}
 		cart[item.id] = BuyItem
 
@@ -164,7 +167,6 @@ class InsideShopDetail extends Component {
 								let packetORDesc = Object.getOwnPropertyNames(item)[3]
 
 								if(item[packetORDesc] !== undefined){
-									// counter1 += 1
 									this.dataAndCategories[elem.index]["pieceAndPacket"] = counter1 += 1
 								}else{
 									this.dataAndCategories[elem.index]["piece"] = counter2 += 1
@@ -231,7 +233,7 @@ const mapDispatchTOProps = (dispatch) =>{
 		cart : (cart)=>{
 			dispatch({
 				type :"cart",
-				cart
+				updateCart : cart
 			})
 		},
 		changeQty : (update)=>{

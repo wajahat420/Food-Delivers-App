@@ -2,6 +2,7 @@ const reducer = (state = {
 	shopClicked : {},
 	cart : {},
 	updateQty : {},
+	total : 0,
 	shopItems :	
 	[
 		{
@@ -108,16 +109,23 @@ const reducer = (state = {
 		 case "cart":
 			 state = {
 				 ...state,
-				cart : action.cart
+				cart : action.updateCart
 			 }
-			//  console.warn("store.js",state)
+			//  console.warn("store.js cart=",state.cart)
 		break
 		case "update":
 			state= {
 				...state,
 				updateQty :  action.update
 			}
-			// console.warn("store",state.updateQty)
+			console.warn("store.js updateQty = ",state.updateQty)
+		break
+		case "total":
+			state= {
+				...state,
+				total :  action.updateTotal
+			}
+			// console.warn("store.js updateQty = ",state.updateQty)
 		break
 		 default :
 			return state 

@@ -1,20 +1,26 @@
 import React from 'react'
 import { View, Text,StyleSheet } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const operator = () => {
+const operator = (props) => {
     return (
         <View style={styles.container}>
-            {/* <View></View> */}
-            <Text style={[styles.text,{width :25}]}>-</Text>
-            <Text style={styles.text}>4</Text>
-            <Text style={[styles.text,{width :25}]}>+</Text>
+            <TouchableOpacity onPress={()=>props.pressed("dec")}>
+                <Text style={[styles.text,{width:25}]}>-</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.99}>
+                <Text style={[styles.text]}>{props.quantity}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=>props.pressed("inc")}>
+                <Text style={[styles.text,{width:25}]}>+</Text>
+            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        display: "flex",
+        // display: "flex",
         flexDirection : "row"
     },
     text : {

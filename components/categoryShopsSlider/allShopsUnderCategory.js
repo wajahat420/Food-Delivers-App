@@ -72,6 +72,7 @@ export default class allShopsUnderCategory extends Component {
 
 	
 	render() {
+
 		const data = []
 		this.state.shopDeatils.forEach(x=>{
 
@@ -89,7 +90,7 @@ export default class allShopsUnderCategory extends Component {
 		})
 		const categories = Object.getOwnPropertyNames(this.shopsUnderCategories)
 		this.props.categories(data)
-		// console.warn(categories)
+		console.warn(categories)
 		// console.warn(this.shopsUnderCategories)
 
 		return (

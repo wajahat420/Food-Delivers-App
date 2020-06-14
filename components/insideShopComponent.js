@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import Quantity from "../components/quantity"
 
 export default function insideShopComponent(props) {
+	// console.warn("packet",props.piece,props.packet)
 	return (
 		<TouchableOpacity activeOpacity={0.9}>
 			
@@ -18,10 +19,10 @@ export default function insideShopComponent(props) {
 							</TouchableOpacity>
 						</View>
 
-						<View style={styles.quantityAndPrice}>
+						<View style={[styles.quantityAndPrice,props.packet[0] == null && {display : "none"}]}>
 							<Quantity  quantity={props.packetQty} display={props.packetQty}/>
 							<TouchableOpacity activeOpacity={0.7} onPress={props.packetPress}>
-								<Text style={[styles.price,props.packet[0] == undefined && {display : "none"} ]} >{props.packet[0]} = Rs {props.packet[1]}</Text>
+								<Text style={[styles.price ]} >{props.packet[0]} = Rs {props.packet[1]}</Text>
 							</TouchableOpacity>
 						</View>
 

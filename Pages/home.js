@@ -24,7 +24,7 @@ class Home extends Component {
 		this.props.setShopClicked(item)
 	}
 	componentDidMount(){
-		this.setState({})
+		// this.setState({})
 	}
 	render() {
 

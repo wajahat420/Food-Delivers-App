@@ -2,11 +2,9 @@ import React from 'react'
 import ShopFront from "./shopFrontDiv"
 import {Text, View,SafeAreaView,FlatList, StyleSheet, TouchableOpacity} from "react-native"
 
-function openShopDetails(item){
-	console.warn("jhjh",item)
-}
 
 export default function Shops(props) {
+	console.warn("shops.js")
 
 	return (
 		<View style={styles.container}>
