@@ -10,8 +10,9 @@ import {connect} from "react-redux";
 
 class InsideShopDetail extends Component {
 	constructor({navigation}){
+
 		super()
-		// console.warn("constructor")
+
 		this.dataAndCategories = []
 		this.navigation = navigation
 		this.scroll = 0
@@ -20,108 +21,67 @@ class InsideShopDetail extends Component {
 		this.shopClicked =	{}
 
 		this.state = {
+
+			updateQty : {"28273363.99":{piece:0,packet:0}},
 			display : false,
 			loading : false,
-
-			shopsItems :	
-			[
-				{
-					id: "123",
-					items : 
-						{
-							"Shaving Erasers" : [
-								{name:"Gillete",piece:30,packet:180},
-								{name:"Gillete",piece:60,packet:350},
-								{name:"Mach 3",piece:50,packet:300}
-							],
-							"Chips" : [
-								{name:"French Cheese Lays",piece:30},
-								{name:"Masala Lays",piece:30},
-								{name:"French Cheese Lays",piece:50},
-								{name:"Masala Lays",piece:50}
-							],
-							"Juices and Cold drinks" : [
-								{name:"slice",piece:20,packet:300},
-								{name:"pakola",piece:35,packet:350}
-							],
-							"Grocery" : [
-								{name: "sugar","1 kg":"80"},
-								{name:"aata","1kg":60,"5 kg":500}
-							],
-							"Tofee" : [
-								{name:"Ding Dong",piece:2,packet:5000},
-								{name:"Fresh up",piece:2},
-								{name:"Fanta",piece:1},
-								{name:"Eclairs",piece:2}
-							],
-						}
-				},
-				{
-					id: "234",
-					items : 
-						{
-							"Juices and Cold drinks" : [
-								{name:"slice",piece:20,packet:300},
-								{name:"pakola",piece:35,packet:350}
-							],
-							"Grocery" : [
-								{name: "sugar","1 kg":"80"},
-								{name:"aata","1kg":"60"}
-							]
-						}
-				},
-				{
-					id:"789",
-					items : 
-						{
-							"Milk and Yougart" : [
-								{name:"milk","1 kg" : 105},
-								{name:"yougart","1kg":90}
-							],
-							"Others" : [
-								{name:"small papay","1 kg":60},
-								{name:"big papay","1 kg":80},
-								{name:"baqar khani",packet:50},
-								{name:"egg",piece:10,dozen:110}
-							]
-						},
-					
-				},
-				{
-					id : "198",
-					items: 
-						{
-							"Biryani and Pulao" : [
-								{name:"Chicken Biryani",plate:70},
-								{name:"Chicken Pulao",plate:70},
-								{name:"Beef Biryani",plate:70},
-								{name:"Beef Pulao",plate:70},
-								{name:"Saadi Biryani",plate:50},
-								{name:"Saadi Pulao",plate:50}
-
-							],
-							"Daal and Salan": [
-								{name:"Daal Maash",plate:80},
-								{name:"Daal Maash Fry",plate:100},
-								{name:"Daal Chana",plate:80},
-								{name:"Daal Chana Fry",plate:100},
-								{name:"Chicken Qorma",plate:120}
-							],
-							"Roti and others" : [
-								{name:"Naan",piece: 10},
-								{name:"Chapati",piece:9},
-								{name:"Shermaal",piece:30},
-								{name:"Taftan",piece:30}
-							]
-						}
-					
-				}
-			]	
+			shopsItems : []
 		}
+		// console.warn("update up",this.state.shopsItems)
+
+
 		this.categories = []
 	}
+	componentDidMount(){
+		console.warn("Did Mount",this.props.updateQty)
+		// this.state.updateQty = this.props.updateQty
+		this.setState({updateQty: this.props.updateQty, shopsItems : this.props.shopsItems})
+	}
 	sendToCart(shopName,item,pressed) {
-		console.warn(shopName,item,pressed)
+		// console.warn(shopName,item,pressed)
+
+		let copy = {...this.state.updateQty}
+		let updateQty = this.state.updateQty
+		let pieceQty;
+		let packetQty;
+
+		if (updateQty[item.id] == undefined){
+			if (pressed == "piece"){
+				copy[item.id] = {piece:1,packet:0}
+				pieceQty = 1
+				packetQty = 0
+			}else{
+				copy[item.id] = {piece:0,packet:1}
+				pieceQty = 0
+				packetQty = 1
+			}
+		}else{
+			if (pressed == "piece"){
+				copy[item.id]["piece"] += 1
+			}else{
+				copy[item.id]["packet"] += 1
+			}
+			pieceQty = copy[item.id]["piece"]
+			packetQty = copy[item.id]["packet"] 
+		}
+		this.setState({updateQty:copy},()=>{
+			// console.warn("updateQty",this.state.updateQty)
+			this.props.changeQty(this.state.updateQty)
+		})
+
+		let BuyItem = {
+			shop : shopName,
+			item : item["name"],
+			piecePrice : item["piece"],
+			pieceQty,
+			packetPrice : item["packet"],
+			packetQty
+		}
+		let cart = {...this.props.getCart}
+		cart[item.id] = BuyItem
+
+		this.props.cart(cart)
+		
 	}
 
 	renderShopData(item){
@@ -142,8 +102,6 @@ class InsideShopDetail extends Component {
 			}
 	}
 	moveToIndex(index){
-		const catchIndexData = this.dataAndCategories[index*2]
-		// console.warn("data",index,catchIndexData,catchIndexData.pieceAndPacket)
 		
 		let heading = 0
 		let smallDiv = 0
@@ -155,19 +113,17 @@ class InsideShopDetail extends Component {
 
 		for(i=0;i<index*2;i+=2){
 			const data = this.dataAndCategories[i]
-			// console.warn("data piece", data.piece,data.pieceAndPacket)
 			smallDiv +=  data.piece
 			bigDiv +=  data.pieceAndPacket
 			heading += 1
 		}
-		// console.warn(smallDiv,bigDiv,heading)
 		this.scroll.scrollToOffset({animated: true,offset:heading * headingSize + smallDiv * smallDivSize + bigDiv * bigDivSize })
 
 	}
 	render() { 
-		
-		// this.setState({})
-		
+	
+		// console.warn("update up",this.state.shopsItems)
+
 		this.state.shopsItems.forEach(item=>{
 			if(item.id === this.props.shopClicked.id && item.id !== this.shopClicked.id){
 				this.renderShopData(item)
@@ -198,15 +154,14 @@ class InsideShopDetail extends Component {
 						let counter2 = 0
 						this.dataAndCategories[elem.index]["pieceAndPacket"] = 0
 						this.dataAndCategories[elem.index]["piece"] = 0
-						// console.warn("categoryItems",elem,this.dataAndCategories.length)
-						// console.warn("counter",elem.index)
+
 						if (elem.index % 2 ==0) {
 							return <Text style={styles.category}>{elem.item.title}</Text>
 						}
 						return(
 							categoryItems.map((item)=>{
-								let pieceORDesc = Object.getOwnPropertyNames(item)[1]
-								let packetORDesc = Object.getOwnPropertyNames(item)[2]
+								let pieceORDesc = Object.getOwnPropertyNames(item)[2]
+								let packetORDesc = Object.getOwnPropertyNames(item)[3]
 
 								if(item[packetORDesc] !== undefined){
 									// counter1 += 1
@@ -214,13 +169,27 @@ class InsideShopDetail extends Component {
 								}else{
 									this.dataAndCategories[elem.index]["piece"] = counter2 += 1
 								}
+
+								let updateQty = this.state.updateQty
+								if (updateQty[item.id] != undefined){
+									piece = updateQty[item.id]["piece"]
+									packet = updateQty[item.id]["packet"]
+								}else{
+									piece = 0
+									packet = 0
+								}
+								// console.warn("piece",piece)
+						
 								return(
 									<InsideShopDetailComponent 
+										id={item.id}
 										perPiecePress={()=>this.sendToCart(this.shopClicked.name,item,"piece")}
 										packetPress = {()=> this.sendToCart(this.shopClicked.name,item,"packet")}
 										item={item.name}
 										piece={[pieceORDesc,item[pieceORDesc]]}
 										packet={[packetORDesc,item[packetORDesc]]}
+										pieceQty={piece}
+										packetQty={packet}
 									/>
 								)
 							})					
@@ -250,13 +219,27 @@ const styles = StyleSheet.create({
 
 const mapStateTOProps = (state) =>{
 	return{
-		shopClicked : state.shopClicked
+		shopClicked : state.shopClicked,
+		getCart : state.cart,
+		updateQty : state.updateQty,
+		shopsItems : state.shopItems
 	}
 }
 
 const mapDispatchTOProps = (dispatch) =>{
 	return{
-
+		cart : (cart)=>{
+			dispatch({
+				type :"cart",
+				cart
+			})
+		},
+		changeQty : (update)=>{
+			dispatch({
+				type : "update",
+				update
+			})
+		}
 	}
 }
 

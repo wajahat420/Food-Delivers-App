@@ -37,7 +37,7 @@ class Home extends Component {
 				openShopDetails={(item)=>this.openShopDetails(item)}
 				categories = {(data)=> this.data = data}
 			/>
-			<Footer/>
+			<Footer navigation={this.navigation}/>
 		</View>
 		)
 	}
@@ -46,7 +46,7 @@ class Home extends Component {
 const styles = StyleSheet.create({
 	container: {
 	  flex: 1,
-	  backgroundColor: '	background-color: rgba(185, 185, 185, 0.253)ss',
+	//   backgroundColor: '	background-color: rgba(185, 185, 185, 0.253)',
 	},
  });
 
