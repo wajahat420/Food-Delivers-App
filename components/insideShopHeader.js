@@ -6,13 +6,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function insideShopHeader(props) {
 	return (
 		<View style={styles.headingBG}>
-			<TouchableOpacity onPress={props.backPress} activeOpacity={0.6} style={[styles.both,styles.arrow]}>
+			<TouchableOpacity onPress={props.backPress} activeOpacity={0.6} style={[styles.both,styles.arrow,{display:props.displayBack}]}>
 				<AntDesign  name="arrowleft" size={30} color="white"/>
 			</TouchableOpacity>
 
-			<Text style={styles.heading}>{props.shopName}</Text>
+			<Text style={styles.heading}>{props.name}</Text>
 
-			<TouchableOpacity onPress={props.searchPress} activeOpacity={0.6} style={[styles.both,styles.search]}>
+			<TouchableOpacity onPress={props.searchPress} activeOpacity={0.6} style={[styles.both,styles.search,{display:props.displaySearch}]}>
 				<AntDesign  name="search1" size={25} color="white"/>
 			</TouchableOpacity>
 		</View>

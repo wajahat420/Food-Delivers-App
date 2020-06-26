@@ -14,12 +14,10 @@ class Home extends Component {
 		this.navigation = navigation
 		this.data =  [],
 		this.state = {
-			// categories : []
 		}
 	}
 
 	openShopDetails(item){
-		// console.warn("workkkkk",item)
 		this.navigation.navigate("insideShopDetails")
 		this.props.setShopClicked(item)
 	}
@@ -46,7 +44,6 @@ class Home extends Component {
 const styles = StyleSheet.create({
 	container: {
 	  flex: 1,
-	//   backgroundColor: '	background-color: rgba(185, 185, 185, 0.253)',
 	},
  });
 

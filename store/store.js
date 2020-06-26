@@ -51,6 +51,34 @@ const reducer = (state = {
 				}
 		},
 		{
+			id: "299",
+			items : 
+				{
+					"Juices and Cold drinks" : [
+						{id:Date.now()*Math.random(),name:"slice",piece:20,packet:300},
+						{id:Date.now()*Math.random(),name:"pakola",piece:35,packet:350}
+					],
+					"Grocery" : [
+						{id:Date.now()*Math.random(),name: "sugar","1 kg":"80"},
+						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
+					]
+				}
+		},
+		{
+			id: "199",
+			items : 
+				{
+					"Juices and Cold drinks" : [
+						{id:Date.now()*Math.random(),name:"slice",piece:20,packet:300},
+						{id:Date.now()*Math.random(),name:"pakola",piece:35,packet:350}
+					],
+					"Grocery" : [
+						{id:Date.now()*Math.random(),name: "sugar","1 kg":"80"},
+						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
+					]
+				}
+		},
+		{
 			id:"789",
 			items : 
 				{
@@ -118,7 +146,7 @@ const reducer = (state = {
 				...state,
 				updateQty :  action.update
 			}
-			console.warn("store.js updateQty = ",state.updateQty)
+			// console.warn("store.js updateQty = ",state.updateQty)
 		break
 		case "total":
 			state= {

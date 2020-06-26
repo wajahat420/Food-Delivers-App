@@ -16,7 +16,6 @@ class InsideShopDetail extends Component {
 		this.dataAndCategories = []
 		this.navigation = navigation
 		this.scroll = 0
-		this.itemCategories = []
 		this.data = []
 		this.shopClicked =	{}
 
@@ -33,7 +32,7 @@ class InsideShopDetail extends Component {
 		this.categories = []
 	}
 	componentDidMount(){
-		this.setState({updateQty: this.props.updateQty, shopsItems : this.props.shopsItems})
+		this.setState({})
 	}
 	sendToCart(shopName,item,pressed) {
 		// console.warn(shopName,item,pressed)
@@ -79,7 +78,7 @@ class InsideShopDetail extends Component {
 			packetQty,
 			packetName : packet
 		}
-		console.warn("packet",BuyItem)
+		// console.warn("packet",BuyItem)
 		let cart = {...this.props.getCart}
 		cart[item.id] = BuyItem
 
@@ -88,7 +87,7 @@ class InsideShopDetail extends Component {
 	}
 
 	renderShopData(item){
-				
+			console.warn("item",item)
 			this.shopClicked = item
 			this.shopClicked["name"] = this.props.shopClicked.name
 			
@@ -104,12 +103,9 @@ class InsideShopDetail extends Component {
 				this.dataAndCategories.push(this.data[i])
 			}
 	}
-	moveToIndex(index){
+	moveToIndex(index,heading=0, smallDiv=0, bigDiv=0){
+		console.warn("index",heading,smallDiv,bigDiv)
 		
-		let heading = 0
-		let smallDiv = 0
-		let bigDiv = 0
-
 		let headingSize = 54
 		let smallDivSize = 57
 		let bigDivSize = 83
@@ -120,15 +116,48 @@ class InsideShopDetail extends Component {
 			bigDiv +=  data.pieceAndPacket
 			heading += 1
 		}
-		this.scroll.scrollToOffset({animated: true,offset:heading * headingSize + smallDiv * smallDivSize + bigDiv * bigDivSize })
+		// console.warn( headingSize,  smallDivSize, bigDivSize,57+54+83)
+		console.warn(smallDiv,bigDiv)
+		this.scroll.scrollToOffset({animated: true,offset : heading * headingSize + smallDiv * smallDivSize + bigDiv * bigDivSize })
+		// this.scroll.scrollToOffset({animated: true,offset : headingSize +  })
 
 	}
-	render() { 
-	
-		// console.warn("update up",this.state.shopsItems)
+	onChangeText(text){
+		// console.warn("data",this.dataAndCategories)
+		// console.warn("shopsItems",this.props.shopsItems)
+		// console.warn("categories",this.categories)
+		let found = false
+		for(i=0;i<this.categories.length;i++){
+			let smallDiv = 0
+			let bigDiv = 0
+			const category = this.categories[i]
 
-		this.state.shopsItems.forEach(item=>{
+			this.shopClicked.items[category].forEach((item,index)=>{
+				const objkeys = Object.getOwnPropertyNames(item)
+				if(objkeys[3] == undefined){
+					smallDiv += 1
+				}else{
+					bigDiv += 1
+				}
+
+				itemName = item.name.split(" ")
+				itemName.forEach(elem=>{
+					if(elem.toLowerCase().includes(text.toLowerCase()) && found == false){
+						found = true
+						this.moveToIndex(i,-1,smallDiv,bigDiv)
+					}
+				})
+			})
+		}
+		// console.warn("text",text)
+	}
+	render() { 
+		// in dataAndCategories each category is repeated two times in first category render and in second its items.
+
+
+		this.props.shopsItems.forEach(item=>{
 			if(item.id === this.props.shopClicked.id && item.id !== this.shopClicked.id){
+				this.shopClicked = item
 				this.renderShopData(item)
 			}
 
@@ -139,12 +168,16 @@ class InsideShopDetail extends Component {
 				<InsideShopHeader 
 					searchPress={()=>this.setState({display : !this.state.display})} 
 					backPress={()=>	this.navigation.navigate('home')} 
-					shopName={this.shopClicked.name}/>
+					name={this.shopClicked.name}/>
 				<CategorySlider 
 					data={this.data}
 					moveToIndex={(index)=>this.moveToIndex(index)}
 				/>
-				<Input display={this.state.display ? "input":"display"} placeholder="Search items in this shop"/>
+				<Input display={this.state.display ? "input":"display"} 
+					placeholder="Search items in this shop"
+					onChangeText={(text)=>this.onChangeText(text)}
+
+				/>
 				<FlatList style={styles.ItemsStyling}
 					data={this.dataAndCategories}
 					keyExtractor={item => item.key}
@@ -172,7 +205,7 @@ class InsideShopDetail extends Component {
 									this.dataAndCategories[elem.index]["piece"] = counter2 += 1
 								}
 
-								let updateQty = this.state.updateQty
+								let updateQty = this.props.updateQty
 								if (updateQty[item.id] != undefined){
 									piece = updateQty[item.id]["piece"]
 									packet = updateQty[item.id]["packet"]
@@ -180,7 +213,6 @@ class InsideShopDetail extends Component {
 									piece = 0
 									packet = 0
 								}
-								// console.warn("piece",piece)
 						
 								return(
 									<InsideShopDetailComponent 

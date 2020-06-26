@@ -20,6 +20,20 @@ export default class allShopsUnderCategory extends Component {
 					shopType : "general"
 				},
 				{
+					id : "199",
+					img: "../general_store.jpeg",
+					name: "Raja Babu",
+					location :"Ahsanabad Shops",
+					shopType : "general"
+				},
+				{
+					id : "299",
+					img: "../general_store.jpeg",
+					name: "Uncle",
+					location :"Ahsanabad Shops",
+					shopType : "general"
+				},
+				{
 					id: "234",
 					img: "../boat.jpg",
 					name: "SSAZZ",

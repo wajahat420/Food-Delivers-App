@@ -9,7 +9,7 @@ export default function insideShopInput(props) {
 			placeholder = {props.placeholder}
 			placeholderTextColor = "rgba(132, 132, 130, 0.553)"
 			autoCapitalize = "none"
-			// onChangeText = {this.handleEmail}
+			onChangeText = {props.onChangeText}
 		/>	)
 }
 

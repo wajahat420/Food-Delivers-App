@@ -18,7 +18,6 @@ export default class CategoriesSlider extends Component {
 	componentWillMount() {
 		// console.warn("n",this.props.data)
 		if (this.props.data.length != 0){
-			console.warn("workkkk")
 			this.setState({categoryToFilter : this.props.data[0].title}) 
 		}
 

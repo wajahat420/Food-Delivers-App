@@ -4,8 +4,6 @@ import {Text, View,SafeAreaView,FlatList, StyleSheet, TouchableOpacity} from "re
 
 
 export default function Shops(props) {
-	console.warn("shops.js")
-
 	return (
 		<View style={styles.container}>
 			<Text style={{paddingBottom:7,fontSize:17,textTransform:"capitalize"}}>{props.shopType}</Text>
