@@ -3,6 +3,7 @@ import React from 'react';
 import Home from "./Pages/home"
 import InsideShopDetails from "./Pages/insideShopDetail"
 import Cart from "./Pages/cart"
+import Search from "./Pages/search"
 
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
@@ -25,6 +26,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator headerMode="none">
           <Stack.Screen name="home" component={Home} />
+          <Stack.Screen  name="search" component={ Search } />
           <Stack.Screen  name="insideShopDetails" component={InsideShopDetails} />
           <Stack.Screen  name="cart" component={ Cart } />
         </Stack.Navigator>

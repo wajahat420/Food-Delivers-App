@@ -1,40 +1,58 @@
-import React from 'react';
-import { StyleSheet, Text, View,TextInput } from 'react-native';
+import React from 'react'
+import { Text,View ,StyleSheet} from 'react-native'
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
+export default function insideShopHeader(props) {
+	return (
+		<View style={styles.headingBG}>
+			<TouchableOpacity onPress={props.backPress} activeOpacity={0.6} 
+				style={[styles.both,styles.arrow,{display:props.displayBack}]}>
 
-export default function Header() {
-return (
-		<View style={styles.container}>
-			<View style={styles.headingBG}>
-				<Text style={styles.heading}>Food Delivers</Text>
-			</View>
-			{/* <TextInput style = {styles.input}
-			underlineColorAndroid = "transparent"
-			placeholder = "Search Food,General Items, Dairy Products etc..."
-			placeholderTextColor = "gray"
-			autoCapitalize = "none"
-			// onChangeText = {this.handleEmail}
-			/> */}
+				<AntDesign  name="arrowleft" size={30} color="white"/>
+
+			</TouchableOpacity>
+
+			<Text style={[styles.heading,{display:props.displayName}]}>{props.name}</Text>
+
+			<TouchableOpacity onPress={props.searchPress} activeOpacity={0.6} 
+				style={[styles.both,styles.search,{display:props.displaySearch}]}>
+
+				<AntDesign  name="search1" size={25} color="white"/>
+				
+			</TouchableOpacity>
 		</View>
-);
+	)
 }
 
 const styles = StyleSheet.create({
-	input: {
-		marginLeft: 3,
-		marginRight : 3,
-	  padding:8,
-	  height: 40,
-	  borderWidth: 1
-  },
+	
   headingBG: {
-		backgroundColor : "red"
+		display : "flex",
+		flexDirection: "row",
+		backgroundColor : "red",
+		paddingTop : 30
+  },
+  both:{
+	flex:1
+  },
+  arrow: {
+	paddingTop:5,
+	paddingLeft:12,
+  },
+  search : {
+	textAlign : "left",
+	paddingRight:12,
+	paddingTop : 7,
+
   },
   heading : {
+	//   backgroundColor : "gray",
+	  flex : 1,
 	  padding : 6,
-	  marginTop: 32,
-	  fontSize: 30,
+	  fontSize: 25,
 	  textAlign: "center",
 	  color: "white"
   }
  });
+

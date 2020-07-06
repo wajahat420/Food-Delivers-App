@@ -25,7 +25,7 @@ const reducer = (state = {
 						{id:Date.now()*Math.random(),name:"pakola",piece:35,packet:350}
 					],
 					"Grocery" : [
-						{id:Date.now()*Math.random(),name: "sugar","1 kg":"80"},
+						{id:Date.now()*Math.random(),name: "sugar","1 kg":80},
 						{id:Date.now()*Math.random(),name:"aata","1kg":60,"5 kg":500}
 					],
 					"Tofee" : [
@@ -45,7 +45,7 @@ const reducer = (state = {
 						{id:Date.now()*Math.random(),name:"pakola",piece:35,packet:350}
 					],
 					"Grocery" : [
-						{id:Date.now()*Math.random(),name: "sugar","1 kg":"80"},
+						{id:Date.now()*Math.random(),name: "sugar","1 kg":80},
 						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
 					]
 				}
@@ -59,7 +59,7 @@ const reducer = (state = {
 						{id:Date.now()*Math.random(),name:"pakola",piece:35,packet:350}
 					],
 					"Grocery" : [
-						{id:Date.now()*Math.random(),name: "sugar","1 kg":"80"},
+						{id:Date.now()*Math.random(),name: "sugar","1 kg":80},
 						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
 					]
 				}
@@ -73,7 +73,7 @@ const reducer = (state = {
 						{id:Date.now()*Math.random(),name:"pakola",piece:35,packet:350}
 					],
 					"Grocery" : [
-						{id:Date.now()*Math.random(),name: "sugar","1 kg":"80"},
+						{id:Date.now()*Math.random(),name: "sugar","1 kg":80},
 						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
 					]
 				}
@@ -153,7 +153,7 @@ const reducer = (state = {
 				...state,
 				total :  action.updateTotal
 			}
-			// console.warn("store.js updateQty = ",state.updateQty)
+			// console.warn("store.js ",state.total)
 		break
 		 default :
 			return state 

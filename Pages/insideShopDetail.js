@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import {Text,Button,View, StyleSheet,FlatList} from "react-native"
 import InsideShopDetailComponent from "../components/insideShopComponent"
-import InsideShopHeader from "../components/insideShopHeader"
+import InsideShopHeader from "../components/header"
 import CategorySlider from "../components/CategoriesSlider"
 import Input from "../components/textInput"
+import BuyingDetail from "../components/buyingDetail"
 
 import {connect} from "react-redux";
 
@@ -35,7 +36,7 @@ class InsideShopDetail extends Component {
 		this.setState({})
 	}
 	sendToCart(shopName,item,pressed) {
-		// console.warn(shopName,item,pressed)
+		// console.warn(item,pressed)
 
 		let copy = {...this.state.updateQty}
 		let updateQty = this.state.updateQty
@@ -43,26 +44,36 @@ class InsideShopDetail extends Component {
 		let packetQty;
 		let piece = Object.getOwnPropertyNames(item)[2]
 		let packet = Object.getOwnPropertyNames(item)[3]
+		let total = this.props.total
+		// console.warn(item[packet],packet)
 
 		if (updateQty[item.id] == undefined){
 			if (pressed == "piece"){
 				copy[item.id] = {piece:1,packet:0}
 				pieceQty = 1
 				packetQty = 0
+				total +=  item[piece]
 			}else{
 				copy[item.id] = {piece:0,packet:1}
 				pieceQty = 0
 				packetQty = 1
+				total +=  item[packet]
 			}
 		}else{
 			if (pressed == "piece"){
 				copy[item.id]["piece"] += 1
+				total +=  item[piece]
+
 			}else{
 				copy[item.id]["packet"] += 1
+				total +=  item[packet]
 			}
 			pieceQty = copy[item.id]["piece"]
 			packetQty = copy[item.id]["packet"] 
 		}
+		this.props.updateTotal(total)
+		// console.warn(total)
+
 		this.setState({updateQty:copy},()=>{
 			// console.warn("updateQty",this.state.updateQty)
 			this.props.changeQty(this.state.updateQty)
@@ -87,7 +98,7 @@ class InsideShopDetail extends Component {
 	}
 
 	renderShopData(item){
-			console.warn("item",item)
+			// console.warn("item",item)
 			this.shopClicked = item
 			this.shopClicked["name"] = this.props.shopClicked.name
 			
@@ -154,7 +165,9 @@ class InsideShopDetail extends Component {
 	render() { 
 		// in dataAndCategories each category is repeated two times in first category render and in second its items.
 
-
+		let buyingDetail = 	<BuyingDetail total={this.props.total}
+											redirectToCart={this.navigation}/>
+							
 		this.props.shopsItems.forEach(item=>{
 			if(item.id === this.props.shopClicked.id && item.id !== this.shopClicked.id){
 				this.shopClicked = item
@@ -164,7 +177,7 @@ class InsideShopDetail extends Component {
 		})
 
 		return (
-			<View>
+			<View style={{flex:1}}>
 				<InsideShopHeader 
 					searchPress={()=>this.setState({display : !this.state.display})} 
 					backPress={()=>	this.navigation.navigate('home')} 
@@ -176,9 +189,10 @@ class InsideShopDetail extends Component {
 				<Input display={this.state.display ? "input":"display"} 
 					placeholder="Search items in this shop"
 					onChangeText={(text)=>this.onChangeText(text)}
-
+					clickDisplay="none"
 				/>
 				<FlatList style={styles.ItemsStyling}
+
 					data={this.dataAndCategories}
 					keyExtractor={item => item.key}
 					ref={(ref) => this.scroll = ref}
@@ -231,7 +245,7 @@ class InsideShopDetail extends Component {
 					}}
 				>
 				</FlatList>
-
+				{buyingDetail}
 			</View>
 		)
 	}
@@ -240,7 +254,7 @@ class InsideShopDetail extends Component {
 const styles = StyleSheet.create({
 	ItemsStyling : {
 		paddingHorizontal : 8,
-		marginBottom: 140
+		marginBottom: 60
 	},
 	category : {
 		fontSize : 25,
@@ -256,7 +270,8 @@ const mapStateTOProps = (state) =>{
 		shopClicked : state.shopClicked,
 		getCart : state.cart,
 		updateQty : state.updateQty,
-		shopsItems : state.shopItems
+		shopsItems : state.shopItems,
+		total : state.total
 	}
 }
 
@@ -272,6 +287,12 @@ const mapDispatchTOProps = (dispatch) =>{
 			dispatch({
 				type : "update",
 				update
+			})
+		},
+		updateTotal : (total)=>{
+			dispatch({
+				type : "total",
+				updateTotal:total
 			})
 		}
 	}
