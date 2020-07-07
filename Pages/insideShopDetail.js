@@ -45,6 +45,7 @@ class InsideShopDetail extends Component {
 		let piece = Object.getOwnPropertyNames(item)[2]
 		let packet = Object.getOwnPropertyNames(item)[3]
 		let total = this.props.total
+		let quantity = this.props.quantity
 		// console.warn(item[packet],packet)
 
 		if (updateQty[item.id] == undefined){
@@ -71,8 +72,10 @@ class InsideShopDetail extends Component {
 			pieceQty = copy[item.id]["piece"]
 			packetQty = copy[item.id]["packet"] 
 		}
+		quantity += 1
+		// console.warn(quantity)
 		this.props.updateTotal(total)
-		// console.warn(total)
+		this.props.updateQuantity(quantity)
 
 		this.setState({updateQty:copy},()=>{
 			// console.warn("updateQty",this.state.updateQty)
@@ -166,7 +169,8 @@ class InsideShopDetail extends Component {
 		// in dataAndCategories each category is repeated two times in first category render and in second its items.
 
 		let buyingDetail = 	<BuyingDetail total={this.props.total}
-											redirectToCart={this.navigation}/>
+											redirectToCart={this.navigation}
+											quantity={this.props.quantity}/>
 							
 		this.props.shopsItems.forEach(item=>{
 			if(item.id === this.props.shopClicked.id && item.id !== this.shopClicked.id){
@@ -271,7 +275,8 @@ const mapStateTOProps = (state) =>{
 		getCart : state.cart,
 		updateQty : state.updateQty,
 		shopsItems : state.shopItems,
-		total : state.total
+		total : state.total,
+		quantity:state.cartQuantity
 	}
 }
 
@@ -293,6 +298,12 @@ const mapDispatchTOProps = (dispatch) =>{
 			dispatch({
 				type : "total",
 				updateTotal:total
+			})
+		},
+		updateQuantity : (quantity)=>{
+			dispatch({
+				type : "quantity",
+				updateQuantity:quantity
 			})
 		}
 	}

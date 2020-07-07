@@ -3,6 +3,7 @@ const reducer = (state = {
 	cart : {},
 	updateQty : {},
 	total : 0,
+	cartQuantity:0,
 	shopItems :	
 	[
 		{
@@ -154,6 +155,13 @@ const reducer = (state = {
 				total :  action.updateTotal
 			}
 			// console.warn("store.js ",state.total)
+		break
+		case "quantity":
+			state= {
+				...state,
+				cartQuantity :  action.updateQuantity
+			}
+			// console.warn("store.js ",action.updateQuantity)
 		break
 		 default :
 			return state 

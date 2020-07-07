@@ -8,7 +8,7 @@ export default function buyingDetail(props) {
         <View style={styles.headingBG}>
                 <View style={{flex:1}}>
                     <View style={{backgroundColor:"blue",borderRadius:10,position:"absolute",width:20,top:12,left:22}}>
-                      <Text style={{textAlign:"center",color:"white"}}>9</Text>
+    <Text style={{textAlign:"center",color:"white"}}>{props.quantity}</Text>
                     </View>
                     <AntDesign    name="shoppingcart" size={55} color={ "white"} />
                 </View>
