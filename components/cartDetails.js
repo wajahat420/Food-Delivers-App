@@ -9,10 +9,8 @@ class cartDetails extends React.Component{
         let ids =  Object.getOwnPropertyNames(cart)
         let total = 0
         let counter = 0
-        // console.warn("cart",cart)
-        // console.warn("ids",ids)
+
         return (
-            // <Text>22</Text>
             ids.map(id=>{
 
                 const item = cart[id]
@@ -24,13 +22,12 @@ class cartDetails extends React.Component{
                 }
                 counter += 1
                 if(ids.length  == counter){
-
                     this.props.total(total)
                 }
                 // console.warn("total",total)
                 return(
 
-                    <View style={styles.container}>
+                    <View style={[styles.container]}>
                         <Text style={{fontSize: 18,marginBottom:3,marginTop:8}}>{item.item}</Text>
             
                         <View >

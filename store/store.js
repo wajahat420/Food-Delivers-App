@@ -47,7 +47,7 @@ const reducer = (state = {
 					],
 					"Grocery" : [
 						{id:Date.now()*Math.random(),name: "sugar","1 kg":80},
-						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
+						{id:Date.now()*Math.random(),name:"aata","1kg":60}
 					]
 				}
 		},
@@ -61,7 +61,7 @@ const reducer = (state = {
 					],
 					"Grocery" : [
 						{id:Date.now()*Math.random(),name: "sugar","1 kg":80},
-						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
+						{id:Date.now()*Math.random(),name:"aata","1kg":60}
 					]
 				}
 		},
@@ -75,7 +75,7 @@ const reducer = (state = {
 					],
 					"Grocery" : [
 						{id:Date.now()*Math.random(),name: "sugar","1 kg":80},
-						{id:Date.now()*Math.random(),name:"aata","1kg":"60"}
+						{id:Date.now()*Math.random(),name:"aata","1kg":60}
 					]
 				}
 		},

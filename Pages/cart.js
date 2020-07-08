@@ -13,38 +13,52 @@ import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handl
              total : 0
          }
      }
-    update(operator,id,pieceORpacket,total=0){
+    update(operator,id,pieceORpacket){
         // console.warn("op",operator,id,pieceORpacket)
         let cart = this.props.cart
         let updateQty = this.props.update
+        let cartQuantity = this.props.cartQuantity
+        // console.warn("qty",cartQuantity)
+
         if(pieceORpacket == "piece"){
             if(operator == "dec"){
                 cart[id]["pieceQty"] -= 1
                 updateQty[id]["piece"] -= 1
+                cartQuantity -= 1
             }else{
                 cart[id]["pieceQty"] += 1
                 updateQty[id]["piece"] += 1
+                cartQuantity += 1
             }
         }else{
             if(operator == "dec"){
                 cart[id]["packetQty"] -= 1
                 updateQty[id]["packet"] -= 1
+                cartQuantity -= 1
             }else{
                 cart[id]["packetQty"] += 1
                 updateQty[id]["packet"] += 1
+                cartQuantity += 1
             }
         }
+        // console.warn("idd",cart[id]["pieceQty"],cart[id]["packetQty"])
+        if(cart[id]["pieceQty"] == 0 && cart[id]["packetQty"] == 0){
+            delete cart[id]
+        }
+        if(Object.getOwnPropertyNames(cart).length === 0){
+            this.props.updateTotal(0)
+            cartQuantity = 0
+        }
+        this.props.updateCartQuantity(cartQuantity)
         this.props.updateCart(cart)
         this.props.updateQty(updateQty)
         this.setState({})
-        // console.warn("cart")
     }
     componentDidMount(){
         this.setState({})
     }
 
     render() {
-        // console.warn("total of constructor = ",this.total)
         return (
             <View style={{marginTop :30}}>
 
@@ -88,7 +102,8 @@ const mapStateTOProps = (state) =>{
     return{
         cart : state.cart,
         update : state.updateQty,
-        total : state.total
+        total : state.total,
+        cartQuantity : state.cartQuantity
     }
 }
 const mapDispatchTOProps = (dispatch) => {
@@ -104,6 +119,19 @@ const mapDispatchTOProps = (dispatch) => {
             dispatch({
                 type : "update",
                 update : updateQty
+            })
+        },
+        updateTotal : (total)=>{
+            dispatch({
+                type : "total",
+                updateTotal : total
+            })
+
+        },
+        updateCartQuantity : (quantity)=>{
+            dispatch({
+                type : "quantity",
+                updateQuantity : quantity
             })
 
         }

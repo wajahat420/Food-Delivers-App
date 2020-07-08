@@ -14,6 +14,7 @@ class InsideShopDetail extends Component {
 
 		super()
 
+
 		this.dataAndCategories = []
 		this.navigation = navigation
 		this.scroll = 0
@@ -22,24 +23,30 @@ class InsideShopDetail extends Component {
 
 		this.state = {
 
-			updateQty : {"28273363.99":{piece:0,packet:0}},
+			updateQty : {},
 			display : false,
 			loading : false,
 			shopsItems : []
 		}
+
 		// console.warn("update up",this.state.shopsItems)
 
 
 		this.categories = []
+	}
+	componentWillMount(){
+		if(Object.keys(this.props.updateQty).length !== 0){
+			this.state.updateQty =  this.props.updateQty[this.props.shopClicked["id"]]
+		}
+		console.warn("up",this.state.updateQty	)
 	}
 	componentDidMount(){
 		this.setState({})
 	}
 	sendToCart(shopName,item,pressed) {
 		// console.warn(item,pressed)
-
-		let copy = {...this.state.updateQty}
-		let updateQty = this.state.updateQty
+		let updateQty = this.props.updateQty
+		let copy = {...this.props.updateQty[this.props.shopClicked["id"]]}
 		let pieceQty;
 		let packetQty;
 		let piece = Object.getOwnPropertyNames(item)[2]
@@ -48,7 +55,7 @@ class InsideShopDetail extends Component {
 		let quantity = this.props.quantity
 		// console.warn(item[packet],packet)
 
-		if (updateQty[item.id] == undefined){
+		if (copy[item.id] == undefined){
 			if (pressed == "piece"){
 				copy[item.id] = {piece:1,packet:0}
 				pieceQty = 1
@@ -72,15 +79,14 @@ class InsideShopDetail extends Component {
 			pieceQty = copy[item.id]["piece"]
 			packetQty = copy[item.id]["packet"] 
 		}
-		quantity += 1
-		// console.warn(quantity)
-		this.props.updateTotal(total)
-		this.props.updateQuantity(quantity)
 
-		this.setState({updateQty:copy},()=>{
-			// console.warn("updateQty",this.state.updateQty)
-			this.props.changeQty(this.state.updateQty)
-		})
+		this.props.updateTotal(total)
+		this.props.updateQuantity(quantity += 1)
+
+		updateQty[this.shopClicked["id"]] = copy
+		this.props.changeQty(updateQty)
+
+		this.setState({})
 
 		let BuyItem = {
 			shop : shopName,
@@ -110,7 +116,6 @@ class InsideShopDetail extends Component {
 			this.categories.map((elem,index)=>{
 				this.data.push({id:index,title:elem}) 
 			})
-			// console.warn("shopCLicked", item)
 	
 			for(i=0;i<this.data.length;i++){
 				this.dataAndCategories.push(this.data[i])
@@ -167,6 +172,7 @@ class InsideShopDetail extends Component {
 	}
 	render() { 
 		// in dataAndCategories each category is repeated two times in first category render and in second its items.
+		
 
 		let buyingDetail = 	<BuyingDetail total={this.props.total}
 											redirectToCart={this.navigation}
@@ -202,7 +208,6 @@ class InsideShopDetail extends Component {
 					ref={(ref) => this.scroll = ref}
 
 					renderItem = {elem=>{
-						// console.warn("clicked",this.shopClicked.items[elem.item.title])
 						const categoryItems = this.shopClicked.items[elem.item.title]
 						let counter1 = 0
 						let counter2 = 0
@@ -214,6 +219,8 @@ class InsideShopDetail extends Component {
 						}
 						return(
 							categoryItems.map((item)=>{
+
+
 								let pieceORDesc = Object.getOwnPropertyNames(item)[2]
 								let packetORDesc = Object.getOwnPropertyNames(item)[3]
 
@@ -222,8 +229,11 @@ class InsideShopDetail extends Component {
 								}else{
 									this.dataAndCategories[elem.index]["piece"] = counter2 += 1
 								}
-
-								let updateQty = this.props.updateQty
+								let updateQty = {}
+								if(this.props.updateQty[this.props.shopClicked["id"]] != undefined){
+									updateQty = this.props.updateQty[this.props.shopClicked["id"]]
+								}
+								// console.warn("chck",updateQty)
 								if (updateQty[item.id] != undefined){
 									piece = updateQty[item.id]["piece"]
 									packet = updateQty[item.id]["packet"]
