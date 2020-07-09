@@ -38,7 +38,7 @@ class InsideShopDetail extends Component {
 		if(Object.keys(this.props.updateQty).length !== 0){
 			this.state.updateQty =  this.props.updateQty[this.props.shopClicked["id"]]
 		}
-		console.warn("up",this.state.updateQty	)
+		// console.warn("up",this.state.updateQty	)
 	}
 	componentDidMount(){
 		this.setState({})

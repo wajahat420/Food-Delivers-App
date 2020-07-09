@@ -13,45 +13,62 @@ import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handl
              total : 0
          }
      }
-    update(operator,id,pieceORpacket){
-        // console.warn("op",operator,id,pieceORpacket)
+    update(operator,itemID,pieceORpacket){
+        // console.warn("op",operator,itemID,pieceORpacket)
         let cart = this.props.cart
-        let updateQty = this.props.update
+        let shopClicked = this.props.shopClicked
+        let update = {...this.props.update}
+        let updateQty = update[shopClicked["id"]]
         let cartQuantity = this.props.cartQuantity
-        // console.warn("qty",cartQuantity)
+        // console.warn("qty",shopClicked,update)
+        
+        let keys =  Object.keys(update)
+        for(i=0;i<keys.length;i++){
+            var shopID = keys[i]
+            console.warn("shopID",shopID)
+            if(update[shopID].hasOwnProperty(itemID)){  
+                updateQty = update[shopID]
+                // console.warn("founddddd")
+                break
+            }
+        }
+        // console.warn("updateQty",updateQty,"itemID=",itemID)
 
         if(pieceORpacket == "piece"){
             if(operator == "dec"){
-                cart[id]["pieceQty"] -= 1
-                updateQty[id]["piece"] -= 1
+                cart[itemID]["pieceQty"] -= 1
+                updateQty[itemID]["piece"] -= 1
                 cartQuantity -= 1
             }else{
-                cart[id]["pieceQty"] += 1
-                updateQty[id]["piece"] += 1
+                cart[itemID]["pieceQty"] += 1
+                updateQty[itemID]["piece"] += 1
                 cartQuantity += 1
             }
         }else{
             if(operator == "dec"){
-                cart[id]["packetQty"] -= 1
-                updateQty[id]["packet"] -= 1
+                cart[itemID]["packetQty"] -= 1
+                updateQty[itemID]["packet"] -= 1
                 cartQuantity -= 1
             }else{
-                cart[id]["packetQty"] += 1
-                updateQty[id]["packet"] += 1
+                cart[itemID]["packetQty"] += 1
+                updateQty[itemID]["packet"] += 1
                 cartQuantity += 1
             }
         }
-        // console.warn("idd",cart[id]["pieceQty"],cart[id]["packetQty"])
-        if(cart[id]["pieceQty"] == 0 && cart[id]["packetQty"] == 0){
-            delete cart[id]
+        // console.warn("itemIDd",cart[itemID]["pieceQty"],cart[itemID]["packetQty"])
+        if(cart[itemID]["pieceQty"] == 0 && cart[itemID]["packetQty"] == 0){
+            delete updateQty[itemID]
+            delete cart[itemID]
         }
-        if(Object.getOwnPropertyNames(cart).length === 0){
+        if(Object.keys(cart).length === 0){
             this.props.updateTotal(0)
             cartQuantity = 0
         }
+        update[shopID] = updateQty
+
         this.props.updateCartQuantity(cartQuantity)
         this.props.updateCart(cart)
-        this.props.updateQty(updateQty)
+        this.props.updateQty(update)
         this.setState({})
     }
     componentDidMount(){
@@ -103,7 +120,8 @@ const mapStateTOProps = (state) =>{
         cart : state.cart,
         update : state.updateQty,
         total : state.total,
-        cartQuantity : state.cartQuantity
+        cartQuantity : state.cartQuantity,
+        shopClicked : state.shopClicked
     }
 }
 const mapDispatchTOProps = (dispatch) => {
